@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+<meta name="description" content="神奈川県藤沢市の理容室『コージーHAIRSHOP』のトップページ。ご予約・営業日・最新情報を掲載しています。LINE予約可。駐車場あり。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Barbershop",
+  "name": "コージーHAIRSHOP",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "藤沢市",
+    "postalCode": "252-0807",
+    "streetAddress": "下土棚1101-14"
+  },
+  "telephone": "0466-46-1588",
+  "url": "https://www.cozy-hs.com",
+  "openingHours": "Tu,Mo[2,3] 09:00-19:00"
+}
+</script>
+
+{% block title %}藤沢市の理容室｜コージーHAIRSHOP トップページ{% endblock %}
+
+{% block content %}
+<section class="intro">
+  <h2>ようこそ、コージーヘアショップへ！</h2>
+  <p>地域密着型のアットホームなヘアサロン。</p>
+  <p class="compact">スタンダードから最新のヘアまで対応いたします。</p>
+  <p class="compact">ご予約はお電話でもLINEでも受付をしております。</p>
+  <p class="compact">お気軽にどうぞ。</p>
+</section>
+
+<section id="news">
+  <h2>最新情報</h2>
+  <div id="news-list"></div>
+  <p style="margin-top: 1em; font-size: 0.95em;">
+    <a href="/news" style="text-decoration: underline; color: #5e3f1b;">
+      その他のお知らせはこちらからご確認ください
+    </a>
+  </p>
+</section>
+
+<section id="calendar-section">
+  <h2>営業日カレンダー</h2>
+
+  <!-- JSが描画するターゲット -->
+  <div id="calendar"></div>
+  <div id="calendar2"></div>
+
+  <!-- 説明テキスト -->
+  <p style="margin-top: 0.5em; font-size: 0.9em;">
+     <span style="color:#a40000; font-weight:700;">赤色</span>：定休日（毎週火曜・第2・第3月曜）／その他休業日
+  </p>
+
+  <!-- 公開用カレンダーJS -->
+  <script src="{{ url_for('static', filename='js/calendar.js') }}" defer></script>
+</section>
+
+<section class="shop-info">
+  <h2>店舗情報</h2>
+  <p>
+    <a href="https://www.google.com/maps/search/?api=1&query=神奈川県藤沢市下土棚1101-14" target="_blank" rel="noopener">
+      〒252-0807 神奈川県藤沢市下土棚1101-14（▶Googleマップで表示）
+    </a>
+  </p>
+  <p><a href="tel:0466461588">電話：0466-46-1588</a></p>
+  <p>営業時間：AM9:00～PM7:00</p>
+  <p>定休日：火曜・第2＆第3月曜</p>
+  <p>駐車場：3台あり</p>
+</section>
+<script src="{{ url_for('static', filename='js/news.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/calendar.js') }}" defer></script>
+{% endblock %}

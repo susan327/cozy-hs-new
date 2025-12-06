@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}縮毛矯正{% endblock %}
+
+{% block content %}
+<section class="straightening">
+  <h1>縮毛矯正</h1>
+
+  <p>低料金店でありがちの「早い、安い、悪い」などの技術は他店にお任せしております！<br>
+  コージーでの縮毛矯正術は慎重なカウンセリングの後、
+  その人に合わせた薬剤をミックスし最高のストレートスタイルを提供しています。</p>
+
+  <p>当店の縮毛矯正はガンコなクセ毛をシャープなストレートにしたいのならスリークストレートを、
+  またあまりツンツンしすぎず適度なボリュームとやや柔らかい動きがほしい方はムーブストレートをおすすめしております！</p>
+
+  <p>下の写真は当店で施術したスリークとムーブの参考例です。<br>
+  今、縮毛矯正市場の中で新しいタイプのストレートヘアはいかがでしょうか？</p>
+
+  <h2 style="color: #0066cc; text-align: center;">ムーブストレート（MEN'S）</h2>
+  <div class="example-set" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2em;">
+    <div class="example-block" style="flex: 1 1 300px; max-width: 400px; text-align: center;">
+      <p style="font-size: 1.1em; font-weight: bold;">術前</p>
+      <img src="{{ url_for('static', filename='images/move_before.jpg') }}" alt="ムーブ前" style="width: 100%; height: auto; border-radius: 8px;">
+    </div>
+    <div class="example-block" style="flex: 1 1 300px; max-width: 400px; text-align: center;">
+      <p style="font-size: 1.1em; font-weight: bold;">術後</p>
+      <img src="{{ url_for('static', filename='images/move_after.jpg') }}" alt="ムーブ後" style="width: 100%; height: auto; border-radius: 8px;">
+    </div>
+  </div>
+
+  <h2 style="color: #e5007f; text-align: center;">スリークストレート（LADY'S）</h2>
+  <div class="example-set" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2em;">
+    <div class="example-block" style="flex: 1 1 300px; max-width: 400px; text-align: center;">
+      <p style="font-size: 1.1em; font-weight: bold;">術前</p>
+      <img src="{{ url_for('static', filename='images/sleek_before.jpg') }}" alt="スリーク前" style="width: 100%; height: auto; border-radius: 8px;">
+    </div>
+    <div class="example-block" style="flex: 1 1 300px; max-width: 400px; text-align: center;">
+      <p style="font-size: 1.1em; font-weight: bold;">術後</p>
+      <img src="{{ url_for('static', filename='images/sleek_after.jpg') }}" alt="スリーク後" style="width: 100%; height: auto; border-radius: 8px;">
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,80 @@
+{# templates/post.html #}
+{% extends "base.html" %}
+
+{% block title %}お知らせ投稿{% endblock %}
+
+{% block content %}
+<section class="max-w-3xl mx-auto py-8">
+  <h1 style="font-size:1.6rem; font-weight:700; margin-bottom:1rem;">お知らせ投稿</h1>
+
+  <!-- 投稿フォーム -->
+  <form action="/post" method="post" enctype="multipart/form-data"
+        style="border:1px solid #ddd; border-radius:10px; padding:16px; margin-bottom:24px; background:#fff;">
+    <div style="margin-bottom:12px;">
+      <label for="title" style="display:block; font-weight:600; margin-bottom:6px;">タイトル</label>
+      <input id="title" name="title" type="text" required
+             style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;">
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <label for="body" style="display:block; font-weight:600; margin-bottom:6px;">本文</label>
+      <textarea id="body" name="body" rows="6" required
+                style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;"></textarea>
+      <div style="font-size:12px; color:#666; margin-top:4px;">※改行はそのまま表示されます</div>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <label for="image" style="display:block; font-weight:600; margin-bottom:6px;">画像（任意）</label>
+      <input id="image" name="image" type="file" accept="image/*" onchange="previewImage()">
+      <div id="preview" style="margin-top:8px;"></div>
+    </div>
+
+    <button type="submit"
+            style="padding:10px 16px; border:none; border-radius:8px; background:#007acc; color:#fff; font-weight:600; cursor:pointer;">
+      投稿する
+    </button>
+  </form>
+
+  <h2 style="font-size:1.4rem; font-weight:700; margin:16px 0;">投稿済みのお知らせ</h2>
+
+  <!-- 投稿一覧（サーバー描画に統一／JSでの二重描画なし） -->
+  <div id="postList">
+    {% for post in posts %}
+      <article class="post-card"
+               style="border:1px solid #e5e7eb; border-radius:10px; padding:16px; margin-bottom:16px; background:#fff;">
+        <h3 style="margin:0 0 8px 0; font-size:1.15rem; font-weight:700;">
+          {{ post.title }}
+        </h3>
+
+        <!-- 本文はエスケープしたまま改行保持 -->
+        <div style="white-space: pre-wrap; line-height:1.7; color:#111;">
+          {{ post.body }}
+        </div>
+
+        {% if post.image %}
+          <img src="{{ post.image }}" alt="投稿画像"
+               style="max-width:100%; height:auto; border-radius:8px; margin-top:10px; box-shadow:0 2px 6px rgba(0,0,0,.06);">
+        {% endif %}
+
+        <div style="font-size:.85rem; color:#6b7280; margin-top:8px;">
+          投稿日時：{{ post.timestamp|to_jst }}
+        </div>
+
+        <form action="/delete/{{ post.id }}" method="post"
+              onsubmit="return confirm('この投稿を削除しますか？');"
+              style="margin-top:10px;">
+          <button type="submit"
+                  style="padding:8px 12px; border:none; border-radius:8px; background:#cc0000; color:#fff; font-weight:600; cursor:pointer;">
+            削除
+          </button>
+        </form>
+      </article>
+    {% else %}
+      <p style="color:#6b7280;">まだ投稿がありません。</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- 画像プレビュー専用JSのみ読込（一覧fetchはしない） -->
+<script src="{{ url_for('static', filename='js/post.js') }}" defer></script>
+{% endblock %}

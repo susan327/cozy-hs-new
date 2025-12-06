@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}お知らせ{% endblock %}
+
+{% block content %}
+<section class="news">
+  <h1>お知らせ一覧</h1>
+  <div id="newsList"></div>
+</section>
+
+<script>
+fetch("/api/news")
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById("newsList");
+    data.reverse().forEach(post => {
+      const div = document.createElement("div");
+      div.className = "news-item";
+
+      // ✅ 改行を <br> に変換
+      const formattedBody = (post.body || "").replace(/(\r\n|\r|\n)/g, "<br>");
+
+      div.innerHTML = `
+        <h3>${post.title}</h3>
+        <p>${formattedBody}</p>
+        ${post.image ? `<img src="${post.image}" alt="画像" style="max-width: 100%; border-radius: 8px; margin-top: 0.5em;">` : ""}
+        <p style="font-size: 0.8em; color: #888; margin-top: 0.5em;">${new Date(post.timestamp).toLocaleString()}</p>
+        <hr>
+      `;
+      container.appendChild(div);
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}LINE予約{% endblock %}
+
+{% block content %}
+<section>
+  <h2>LINEで簡単予約</h2>
+  <p>当店では、LINEでのご予約が可能です。</p>
+  <p>以下のボタンをタップして、友だち追加後にメッセージでご予約ください。</p>
+
+  <!-- LINE追加ボタン -->
+  <div style="text-align:center; margin: 2em 0;">
+    <a href="https://page.line.me/831icrra" target="_blank">
+      <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="LINEで予約" style="width:200px;">
+    </a>
+  </div>
+
+  <!-- QRコード表示 -->
+  <div style="text-align:center;">
+    <p>QRコードからの追加もOK：</p>
+    <img src="{{ url_for('static', filename='images/line_qr.png') }}" alt="LINE QRコード" style="width:200px;">
+  </div>
+</section>
+{% endblock %}

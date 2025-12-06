@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>オーナーログイン</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 3em auto;
+    }
+
+    input[type="password"] {
+      font-size: 1.2em;
+      padding: 0.6em;
+      width: 80%;
+      max-width: 300px;
+      margin-bottom: 1em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      font-size: 1.2em;
+      padding: 0.6em 2em;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+  <h2>オーナーログイン</h2>
+  {% if error %}
+    <p style="color: red;">{{ error }}</p>
+  {% endif %}
+  <form method="POST">
+    <input type="password" name="password" placeholder="パスワードを入力" required>
+    <br>
+    <button type="submit">ログイン</button>
+  </form>
+</body>
+</html>

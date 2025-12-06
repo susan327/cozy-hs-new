@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock %}｜コージーHAIRSHOP</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="/static/images/logo.png" alt="コージーHAIR ロゴ">
+    </div>
+
+    <div class="catchphrase">
+      藤沢市、湘南台〜長後のカラー・縮毛矯正・ヘッドスパも得意の理容室・マルチヘアーサロン
+    </div>
+
+    <div class="banner-wrapper">
+      <div class="banner-slider">
+        <img class="slide active" src="{{ url_for('static', filename='images/banner1.jpg') }}" alt="バナー1">
+        <img class="slide" src="{{ url_for('static', filename='images/banner2.jpg') }}" alt="バナー2">
+        <img class="slide" src="{{ url_for('static', filename='images/banner3.jpg') }}" alt="バナー3">
+        <img class="slide" src="{{ url_for('static', filename='images/banner4.jpg') }}" alt="バナー4">
+      </div>
+    </div>
+
+    <nav class="nav">
+      <ul class="nav-list">
+        <li><a href="{{ url_for('index') }}">トップ</a></li>
+        <li><a href="{{ url_for('concept') }}">コンセプト</a></li>
+        <li><a href="{{ url_for('menu') }}">メニュー</a></li>
+        <li><a href="{{ url_for('color') }}">カラー</a></li>
+        <li><a href="{{ url_for('straight') }}">縮毛矯正</a></li>
+        <li><a href="{{ url_for('staff') }}">スタッフ</a></li>
+        <li><a href="{{ url_for('access') }}">アクセス</a></li>
+        <li><a href="{{ url_for('line') }}">LINE予約</a></li>
+        <li><a href="{{ url_for('news') }}">お知らせ</a></li>
+        <li><a href="{{ url_for('privacy') }}">プライバシーポリシー</a></li>
+
+        {% if session.logged_in %}
+          <li><a href="{{ url_for('calendar_page') }}">営業日カレンダー</a></li>
+          <li><a href="{{ url_for('post_page') }}">お知らせ投稿</a></li>
+          <li><a href="{{ url_for('logout') }}">ログアウト</a></li>
+        {% endif %}
+      </ul>
+
+      <!-- ✅ Facebookだけ枠なしで画像リンク表示 -->
+      <div style="margin-left: 1em; margin-top: 0.5em;">
+        <a href="https://www.facebook.com/share/1Emz7JY9vT/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">
+          <img src="{{ url_for('static', filename='images/facebook-banner.webp') }}" alt="Facebook" style="height: 40px;">
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 1995 コージーHAIRSHOP<br>
+    Designed by Kyosuke Sugisawa</p>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.banner-slider .slide');
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 8000);
+  </script>
+</body>
+</html>

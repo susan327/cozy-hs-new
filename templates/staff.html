@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}スタッフ{% endblock %}
+
+{% block content %}
+<section class="staff">
+  <h1>スタッフ</h1>
+
+  <div class="staff-member" style="margin-bottom: 2em;">
+    <div style="margin-bottom: 1em;">
+      <h2>杉澤　浩二</h2>
+      <p>7/19 蟹座</p>
+      <p><strong>趣味：</strong>ゴルフ、ギター、サウナ、野球観戦、ランニング、DIY</p>
+    </div>
+    <div style="text-align: center;">
+      <img src="{{ url_for('static', filename='images/staff_koji.jpg') }}" alt="杉澤浩二" style="width: 200px; border-radius: 8px;">
+    </div>
+  </div>
+
+  <div class="staff-member" style="margin-bottom: 2em;">
+    <div style="margin-bottom: 1em;">
+      <h2>杉澤　洋美</h2>
+      <p>11/6 さそり座</p>
+      <p><strong>趣味：</strong>BTS、韓国ドラマ</p>
+    </div>
+    <div style="text-align: center;">
+      <img src="{{ url_for('static', filename='images/staff_hiromi.jpg') }}" alt="杉澤洋美" style="width: 200px; border-radius: 8px;">
+    </div>
+  </div>
+</section>
+{% endblock %}

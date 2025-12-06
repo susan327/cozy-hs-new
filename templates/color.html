@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}カラー{% endblock %}
+
+{% block content %}
+<section class="color-section page-color">
+  <h1>カラー</h1>
+  <table>
+    <tr>
+      <th>ハイライト</th>
+      <td><strong>お好みの色と明るさを自由自在に</strong>（ポピュラーなcolorです）</td>
+    </tr>
+    <tr>
+      <th>グレイ</th>
+      <td><strong>気になる白髪を自然にカバー</strong>（肌に優しい酸性、しっかり入れたいアルカリがございます）</td>
+    </tr>
+    <tr>
+    </strong></td>
+    </tr>
+    <tr>
+      <th>ポイント</th>
+      <td><strong>気になる場所やお好みの場所に入れていくラインカラー</strong></td>
+    </tr>
+    <tr>
+      <th>白髪ぼかし</th>
+      <td><strong>白髪を自然でナチュラルなグレーに仕上げます。</strong>（施術時間8分）</td>
+    </tr>
+  </table>
+
+  <div class="color-image" style="text-align: center; margin-top: 2em;">
+    <img src="{{ url_for('static', filename='images/color_sample.jpg') }}" alt="カラーチャートサンプル" style="width: 60%; height: auto; border-radius: 12px; box-shadow: 0 0 6px rgba(0,0,0,0.2);">
+  </div>
+</section>
+{% endblock %}

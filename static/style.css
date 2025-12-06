@@ -1,0 +1,208 @@
+/* ==============================
+   Base / Layout
+============================== */
+:root{
+  --bg-paper: #fffaf4;
+  --ink: #3c2f1c;
+  --brand-brown: #8b5e3c;
+  --brand-brown-dark:#704626;
+  --line-soft:#e0c9c9;
+  --tile:#fff8f8;
+  --tile-strong:#fffdfd;
+  --accent-red:#b80000;
+  --closed-bg:#ffccd5;
+  --closed-ink:#7a0011;
+}
+
+* { box-sizing: border-box; }
+
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:"Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
+  background-image:url("/static/images/brick.jpg");
+  background-size:cover;
+  background-repeat:repeat;
+  background-attachment:fixed;
+}
+
+main{
+  padding:2rem;
+  background-color:rgba(255,255,255,.95);
+  margin:2rem auto;
+  max-width:960px;
+  border-radius:12px;
+  box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+/* ==============================
+   Header / Nav / Footer
+============================== */
+header,footer{
+  background-color:rgba(255,250,240,.9);
+  padding:1.2rem;
+  text-align:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.2);
+  border-bottom:2px solid #d2b48c;
+}
+
+h1{ margin:.3em 0; font-weight:700; font-size:1.6em; }
+
+.nav-list{
+  list-style:none; padding:0; margin:.5em 0 0;
+  display:flex; flex-wrap:wrap; gap:1em; justify-content:center;
+}
+.nav-list li a{
+  display:inline-block; padding:.5em 1em;
+  border:2px solid var(--brand-brown); border-radius:8px;
+  background:#fffaf0; color:#5e3f1b; font-weight:700;
+  text-decoration:none; transition:background-color .3s,color .3s;
+}
+.nav-list li a:hover{ background:var(--brand-brown); color:#fff; }
+
+.logo{ padding:10px 0; display:flex; justify-content:flex-start; }
+.logo img{ width:100%; max-width:none; height:auto; margin-left:0; }
+
+.catchphrase{
+  text-align:center; font-size:.95em; font-weight:700;
+  color:#5a4732; background:#fdf8f2; padding:.8em;
+  border-bottom:1px solid #e0d0b0;
+}
+
+/* ==============================
+   Sections / Cards
+============================== */
+section{
+  background:var(--bg-paper);
+  border-radius:12px;
+  padding:2rem;
+  margin:2rem auto;
+  max-width:960px;
+  box-shadow:0 4px 8px rgba(0,0,0,.05);
+}
+section h2{
+  font-size:1.6em; margin:0 0 1em; color:#5e3f1b;
+  border-bottom:2px solid #d2b48c; padding-bottom:.3em;
+}
+
+.card{
+  border:2px solid #deb887; background:#fff8dc;
+  padding:1rem; border-radius:10px; margin-bottom:1.5rem;
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+}
+.card .title{ font-size:1.2em; font-weight:700; color:#5c3a1e; }
+.card .date{ font-size:.9em; color:#777; margin-bottom:.5em; }
+.card img{
+  max-width:300px; width:100%; height:auto; border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,.1); margin-top:.5em;
+}
+
+/* ==============================
+   Banner Slider
+============================== */
+.banner-slider{ width:100%; aspect-ratio:16/9; overflow:hidden; position:relative; }
+.banner-slider .slide{
+  width:100%; height:100%; object-fit:cover; position:absolute; inset:0;
+  opacity:0; transition:opacity 1.5s ease-in-out;
+}
+.banner-slider .slide.active{ opacity:1; z-index:1; }
+@media (min-width:769px){
+  .banner-slider{ max-width:70%; margin:0 auto; border-radius:10px; }
+}
+
+/* ==============================
+   Gallery
+============================== */
+.concept-gallery{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:1rem; margin-top:1rem;
+}
+.concept-gallery img{ width:100%; border-radius:6px; object-fit:cover; }
+
+/* ==============================
+   Forms & Buttons
+============================== */
+input[type="text"], textarea{
+  width:100%; max-width:600px; padding:.8em; margin:.6em 0;
+  border:1px solid #bda27a; border-radius:10px; background:#fffaf2;
+  font-size:1.2em; font-family:"Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
+}
+textarea{ height:240px; }
+
+button{
+  background:linear-gradient(#a67641,var(--brand-brown));
+  color:#fff; font-weight:700; border:none; cursor:pointer; transition:.3s;
+}
+button:hover{ background:linear-gradient(var(--brand-brown),var(--brand-brown-dark)); }
+
+/* ==============================
+   Tables (generic)
+============================== */
+table{ width:100%; border-collapse:collapse; margin-bottom:2rem; }
+th,td{ padding:.5em; text-align:left; }
+
+/* Color page responsive table */
+@media (max-width:768px){
+  .page-color table,.page-color tbody,.page-color tr,
+  .page-color th,.page-color td{ display:block; width:100%; }
+  .page-color th{ font-weight:700; margin-top:1em; background:#f9f9f9; }
+  .page-color td{ margin-bottom:1em; }
+}
+
+/* Price list (color page) */
+.color-list{
+  display:grid; grid-template-columns:auto 1fr;
+  column-gap:1em; row-gap:.5em; margin-bottom:2em;
+}
+.color-list dt{ font-weight:700; white-space:nowrap; }
+.color-list dd{ margin:0; }
+@media (max-width:768px){
+  .color-list{ display:flex; flex-direction:column; }
+  .color-list dt{ margin-top:1em; font-size:1em; }
+  .color-list dd{ margin-left:.5em; font-size:.95em; }
+}
+
+/* ==============================
+   Calendar (unified for .calendar & .cal)
+============================== */
+/* ベース：JSが .cal を、既存HTMLが .calendar を使うので両対応 */
+.cal,.calendar{
+  width:100%; max-width:700px; margin:2rem auto;
+  border-collapse:collapse; table-layout:fixed;
+  background:var(--tile); font-size:1.15rem;
+}
+.cal caption,.calendar caption{
+  font-weight:700; padding:.6rem 0; font-size:1.35rem;
+  color:var(--accent-red); letter-spacing:.5px;
+}
+.cal th,.cal td,.calendar th,.calendar td{
+  width:14.285%; height:72px; text-align:center; vertical-align:middle;
+  border:1px solid var(--line-soft);
+  background:var(--tile-strong);
+  transition:background .15s ease;
+}
+/* 空マス */
+.cal td.empty,.calendar td.empty{ background:#fff6f6; }
+
+/* 休業日（JS: .closed / HTML: .holiday 両対応）*/
+.cal td.closed,
+.calendar td.closed,
+.calendar td.holiday{
+  background:var(--closed-bg) !important;
+  color:var(--closed-ink) !important;
+  font-weight:700; border-color:#ffb3bf;
+  box-shadow:inset 0 0 6px rgba(255,0,0,.22);
+}
+
+/* 管理画面の操作性 */
+.cal td[data-clickable="1"]:hover,
+.calendar td[data-clickable="1"]:hover{
+  cursor:pointer; background:#ffd9df !important;
+}
+
+/* スマホ調整 */
+@media (max-width:768px){
+  .cal,.calendar{ font-size:1.05rem; }
+  .cal th,.cal td,.calendar th,.calendar td{ height:60px; }
+  .cal caption,.calendar caption{ font-size:1.2rem; }
+}
