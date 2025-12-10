@@ -168,38 +168,44 @@ def generate_rule_based_closed_map(start_date: date, months: int = 2):
             m += 1
     return result
 
+
 def merge_overrides(rule_map: dict, overrides: dict):
     """
     既存の手動上書き（OVERRIDES_FILE）をマージ。
-    overrides は { "YYYY-MM-DD": "休業日", ... } 形式（存在=休業扱い）。
+    overrides は {
+        "YYYY-MM-DD": "休業日",  # 強制休業
+        "YYYY-MM-DD": "営業日",  # ルールに逆らって営業
+    } 形式。
     """
     if not isinstance(overrides, dict):
-        return rule_map
+        overrides = {}
 
-    # 日付（YYYY-MM-DD）ごとの closed セットを用意し直す
-    # まずルールベースを平坦化
+    # まずルールベース（毎週火曜＋第2・第3月曜）をフラットな dict に
     flat = {}
     for ym, days in rule_map.items():
         for ds in days:
-            flat[ds] = True
+            flat[ds] = True  # いったん「休業日」として登録
 
-    # overrides: キーが存在する日付は「明示的に休業」に
+    # overrides を適用
     for ds, status in overrides.items():
-        if status:  # "休業日" など、空でなければ休業扱い
+        # 強制休業
+        if status in ("休業日", "closed"):
             flat[ds] = True
+        # 特別営業（ルール上は休みでも営業にする）
+        elif status in ("営業日", "open"):
+            flat.pop(ds, None)  # 休業フラグを削除＝営業扱い
         else:
-            # 空/None の場合は「手動解除」概念にしたいが、
-            # 既存の /api/toggle 実装では status=None の時点でキーごと削除されるため、
-            # ここには基本残らない前提。
+            # その他/空値は「上書きなし」とみなす
             flat.pop(ds, None)
 
-    # 再び month map に戻す
+    # 月単位の map に戻す
     merged = {}
     for ds in sorted(flat.keys()):
         y, m, _ = ds.split("-")
         key = f"{y}-{m}"
         merged.setdefault(key, []).append(ds)
     return merged
+
 
 # -----------------------------
 # ページルート
@@ -342,32 +348,66 @@ def api_holidays():
 @app.route("/api/toggle", methods=["POST"])
 def api_toggle():
     """
-    管理UI用：日付の明示的な休業/解除をトグル
-    body:
-      { "date": "YYYY-MM-DD", "status": "休業日" }  # 追加
-      { "date": "YYYY-MM-DD", "status": null }      # 解除
+    管理UI用：日付の明示的な休業/営業/解除をトグル
+
+    body の例:
+      { "date": "YYYY-MM-DD", "status": "休業日" }  # 強制休業
+      { "date": "YYYY-MM-DD", "status": null }      # 解除 or 特別営業化
+    将来的に:
+      { "date": "YYYY-MM-DD", "status": "営業日" }  # 特別営業（明示指定）も許容
     """
     if not session.get("logged_in"):
         return jsonify({"error": "login required"}), 401
 
     body = request.get_json(silent=True) or {}
     ds = body.get("date")
-    status = body.get("status")  # "休業日" or None
+    status = body.get("status")  # "休業日" / "営業日" / None など
 
     if not ds:
         return jsonify({"error": "date required"}), 400
+
+    # 文字列→date（その月のルール判定に使う）
+    try:
+        target_date = datetime.strptime(ds, "%Y-%m-%d").date()
+    except ValueError:
+        return jsonify({"error": "invalid date format"}), 400
 
     overrides = load_json(OVERRIDES_FILE)
     if not isinstance(overrides, dict):
         overrides = {}
 
     if status is None:
-        overrides.pop(ds, None)  # 解除（キー削除＝自動ロジックへ委ねる）
+        # 解除要求。ここで
+        #  - ルール上 休みの日: 特別営業(営業日)にする
+        #  - ルール上 営業の日: 手動設定を解除
+        base_map = generate_rule_based_closed_map(target_date, months=1)
+        is_rule_closed = any(
+            ds in days for days in base_map.values()
+        )
+
+        if is_rule_closed:
+            # もともと定休日 → 「この日だけ営業」に変更
+            overrides[ds] = "営業日"
+            effective_status = "営業日"
+        else:
+            # もともと営業日 → 手動の休業指定を解除
+            overrides.pop(ds, None)
+            effective_status = None
+
     else:
-        overrides[ds] = "休業日"  # 明示的に休業
+        # 明示的な指定（今のフロントは "休業日" だけ送ってくる想定）
+        if status in ("休業日", "closed"):
+            overrides[ds] = "休業日"
+            effective_status = "休業日"
+        elif status in ("営業日", "open"):
+            overrides[ds] = "営業日"
+            effective_status = "営業日"
+        else:
+            return jsonify({"error": "invalid status"}), 400
 
     save_json(overrides, OVERRIDES_FILE)
-    return jsonify({"status": "ok", "date": ds})
+    return jsonify({"status": "ok", "date": ds, "effective_status": effective_status})
+
 
 @app.route("/api/news", methods=["GET", "POST"])
 def handle_news():
